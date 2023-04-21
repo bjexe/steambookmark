@@ -121,14 +121,14 @@ export default function Index() {
             <div className="flex flex-col items-center justify-center gap-y-[45px] h-full">
               <Image
                 alt="An image of some tracked accounts"
-                src="/all_accounts.png"
+                src="/img/all_accounts.png"
                 width={799}
                 height={392}
                 className="rounded-3xl"
               />
               <Image
                 alt="An image of some tracked accounts that were banned"
-                src="/banned_accounts.png"
+                src="/img/banned_accounts.png"
                 width={799}
                 height={392}
                 className="rounded-3xl"
