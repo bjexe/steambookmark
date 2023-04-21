@@ -141,7 +141,7 @@ export default function Home() {
       const displayName = rawProfileDetails.personaname;
       const avatarUrl = rawProfileDetails.avatarfull;
 
-      const inventoryValue = await getInventoryValue(steam64id);
+      // const inventoryValue = await getInventoryValue(steam64id);
 
       const { data: addTrackedAccountData, error: addTrackedAccountError } =
         await supabase
@@ -153,7 +153,6 @@ export default function Home() {
             is_banned: false,
             avatar_url: avatarUrl,
             display_name: displayName,
-            inventory_value: inventoryValue,
           })
           .select();
 
