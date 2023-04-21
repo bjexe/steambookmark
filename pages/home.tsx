@@ -26,10 +26,12 @@ export default function Home() {
     if (!user) {
       router.push("/");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
     getTrackedAccounts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -679,7 +681,7 @@ export default function Home() {
               </div>
               {findAccountError && (
                 <p className="text-red-600 text-m">
-                  Hmm... looks like we can't find that account. Please check
+                  Hmm... looks like we can&apos;t find that account. Please check
                   your input.
                 </p>
               )}

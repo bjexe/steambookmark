@@ -28,6 +28,7 @@ export default function Index() {
     if (session) {
       router.push("/home");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
   async function handleLogin(event) {
