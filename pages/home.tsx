@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
