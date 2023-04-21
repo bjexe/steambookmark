@@ -17,7 +17,7 @@ export default function TrackedAccount({
   todo?: [];
   steamId: string;
   avatarUrl?: string;
-  trackedDate?: String;
+  trackedDate: string;
   untrack: Function;
   accountId: Number | String;
   inventoryValue: Number | String;
