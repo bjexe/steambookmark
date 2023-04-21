@@ -15,7 +15,7 @@ module.exports = {
         'form-text': 'rgba(0, 0, 0, 0.59)'
       },
       backgroundImage: {
-        'main': "url('../public/colored_body_top2.png')"
+        'main': "url('/colored_body_top2.png')"
       }
     },
   },
