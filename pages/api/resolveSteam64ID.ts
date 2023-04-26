@@ -50,8 +50,8 @@ export default async function handler(
       res.status(400).json({ error: "malformed community profile link" });
     }
   } else {
-    if(/^\d+$/.test(vanityId) && vanityId.length === 17){
-      res.status(400).json({id: vanityId})
+    if(/^\d+$/.test(input) && input.length === 17){
+      res.status(400).json({id: input})
     } else {
       vanityId = input;
     }
