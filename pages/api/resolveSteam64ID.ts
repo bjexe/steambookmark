@@ -32,6 +32,7 @@ export default async function handler(
   }
   let input = body.id;
   if (input.slice(-1) === "/") input = input.slice(0, -1);
+  console.log(input.slice(36));
   let vanityId = "";
   if (detectURL(input)) {
     if (
@@ -41,17 +42,21 @@ export default async function handler(
       const id_from_link = input.slice(36);
       if (id_from_link.length == 17) {
         res.status(200).json({ id: input.slice(36) });
+        return;
       } else {
         res.status(400).json({ error: "malformed community profile link" });
+        return;
       }
     } else if (input.slice(0, 30).includes("id")) {
       vanityId = input.slice(30);
     } else {
       res.status(400).json({ error: "malformed community profile link" });
+      return;
     }
   } else {
     if(/^\d+$/.test(input) && input.length === 17){
       res.status(200).json({id: input})
+      return
     } else {
       vanityId = input;
     }
