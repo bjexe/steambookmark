@@ -51,7 +51,7 @@ export default async function handler(
     }
   } else {
     if(/^\d+$/.test(input) && input.length === 17){
-      res.status(400).json({id: input})
+      res.status(200).json({id: input})
     } else {
       vanityId = input;
     }
