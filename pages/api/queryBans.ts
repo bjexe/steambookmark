@@ -51,6 +51,5 @@ export default async function handler(
     if (i === 0) data = steamResult;
     else data.players = data.players.concat(steamResult.players);
   }
-  console.log(`data from queryBans: ${JSON.stringify(data, null, 2)}`);
   res.status(200).json({ data: data.players });
 }

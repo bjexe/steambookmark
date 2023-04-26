@@ -50,13 +50,16 @@ export default async function handler(
       res.status(400).json({ error: "malformed community profile link" });
     }
   } else {
-    vanityId = input;
+    if(/^\d+$/.test(vanityId) && vanityId.length === 17){
+      res.status(400).json({id: vanityId})
+    } else {
+      vanityId = input;
+    }
   }
   const response = await (
     await fetch(
       `http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=${key}&vanityurl=${vanityId}`
     )
   ).json();
-  console.log(`found: ${JSON.stringify(response)}`);
   res.status(200).json({ id: response.response.steamid });
 }

@@ -10,7 +10,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `https://steamcommunity.com/inventory/${id}/730/2?l=english`
     )
   ).json();
-  console.log(JSON.stringify(steamResult, null, 2));
   if(steamResult === null){
     res.status(502).json({inventory: null, error: "Steam returned null"})
   }

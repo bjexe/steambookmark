@@ -31,6 +31,5 @@ export default async function handler(
     if (i === 0) data = steamResult.response;
     else data.players = data.players.concat(steamResult.response.players);
   }
-  console.log(`data from getPlayerDetails: ${JSON.stringify(data, null, 2)}`);
   res.status(200).json({ data: data.players });
 }
