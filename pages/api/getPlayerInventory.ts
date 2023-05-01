@@ -2,7 +2,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handlePlayerInventory(req: NextApiRequest, res: NextApiResponse) {
   const body = JSON.parse(req.body);
   const id = body.steam_id;
   let steamResult = await(

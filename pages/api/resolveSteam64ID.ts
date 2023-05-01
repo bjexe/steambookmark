@@ -21,7 +21,7 @@ function detectURL(data: string): boolean {
   }
 }
 
-export default async function handler(
+export default async function handleSteamId(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {

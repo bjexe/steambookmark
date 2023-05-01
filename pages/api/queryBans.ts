@@ -36,7 +36,7 @@ function createURL(ids: [number]): string {
   return url.concat(delimitedIds);
 }
 
-export default async function handler(
+export default async function handleBans(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
