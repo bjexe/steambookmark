@@ -297,6 +297,7 @@ export default function Home() {
     const rawNewBanData = newBanData.data;
     const needsUpdate = [];
     tracked_accounts.forEach((account) => {
+      if (account.is_banned) return;
       const updated_info = rawNewBanData.find(
         (result) => result.SteamId === account.steam_id
       );
@@ -579,9 +580,9 @@ export default function Home() {
   }
 
   async function handleSignOut() {
-    const { error } = await supabase.auth.signOut()
-    if(!error) {
-      router.push('/')
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      router.push("/");
     }
   }
 
@@ -678,12 +679,17 @@ export default function Home() {
                     </button>
                   </form>
                 </div>
-                <button className="ml-[175px] text-l rounded-xl p-3 bg-[#1C252E] active:bg-[#34BED3] hover:drop-shadow-2xl" onClick={handleSignOut}>Sign Out</button>
+                <button
+                  className="ml-[175px] text-l rounded-xl p-3 bg-[#1C252E] active:bg-[#34BED3] hover:drop-shadow-2xl"
+                  onClick={handleSignOut}
+                >
+                  Sign Out
+                </button>
               </div>
               {findAccountError && (
                 <p className="text-red-600 text-m">
-                  Hmm... looks like we can&apos;t find that account. Please check
-                  your input.
+                  Hmm... looks like we can&apos;t find that account. Please
+                  check your input.
                 </p>
               )}
             </div>
