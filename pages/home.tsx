@@ -12,6 +12,7 @@ export default function Home() {
   const [note, setNote] = useState("");
   const [trackedAccounts, setTrackedAccounts] = useState([]);
   const [bannedAccounts, setBannedAccounts] = useState([]);
+  const [newBans, setNewBans] = useState([]);
   const [viewingAll, setViewingAll] = useState(true);
   const [findAccountError, setFindAccountError] = useState(false);
   const [sortByLabel, setSortByLabel] = useState("Newest First");
@@ -321,6 +322,11 @@ export default function Home() {
       setFoundBans(true);
       setNumBansFound(needsUpdate.length);
       needsUpdate.forEach(async (account) => {
+        setNewBans((old) => {
+          const ret = [...old];
+          ret.push(account);
+          return ret;
+        });
         const { error } = await supabase
           .from("tracked_accounts")
           .update({
@@ -331,19 +337,14 @@ export default function Home() {
           .eq("id", account.id);
         if (error) {
           console.log(JSON.stringify(error, null, 2));
-        } else {
-          console.log(`updated account ${JSON.stringify(account, null, 2)}`);
         }
       });
       getTrackedAccounts();
-    } else {
-      console.log("needsUpdate is empty");
     }
     const { error: setRefreshError } = await supabase
       .from("profiles")
       .update({ last_refreshed: new Date().toISOString() })
       .eq("id", await getUserID());
-    console.log(JSON.stringify(setRefreshError, null, 2));
     setRefreshSuccess(true);
   }
 
@@ -611,6 +612,9 @@ export default function Home() {
   );
 
   const sortedBannedAccounts = sortAccounts(bannedAccounts, sortDescending);
+  const newBansText = newBans.length ? newBans.map((account) => {
+    return <a href={`https://www.steamcommunity.com/profiles/${account.steam_id}`}>{account.display_name}</a>
+  }) : ""
 
   const bannedTrackedAccountsDisplay = bannedAccounts.length ? (
     sortedBannedAccounts.map((account) => {
@@ -748,7 +752,7 @@ export default function Home() {
                 <h1 className="mt-[10px] text-green-600 text-center text-4xl">
                   Successfully refreshed accounts.&nbsp;
                   {foundBans
-                    ? `Found ${numBansFound} new bans!`
+                    ? `Found ${numBansFound} new bans! The following players were banned: ${newBansText}`
                     : "No bans detected."}
                 </h1>
               )}
