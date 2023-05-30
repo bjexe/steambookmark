@@ -283,7 +283,7 @@ export default function Home() {
     const { data: tracked_accounts_data } = await supabase
       .from("profiles")
       .select(
-        "tracked_accounts(id, steam_id, is_banned, ban_type, ban_date, initial_vac_bans, initial_game_bans, date_added)"
+        "tracked_accounts(id, steam_id, is_banned, ban_type, ban_date, initial_vac_bans, initial_game_bans, date_added, display_name)"
       );
     const tracked_accounts = tracked_accounts_data[0].tracked_accounts;
 
@@ -413,7 +413,7 @@ export default function Home() {
   //           ...account,
   //           ban_type: "VAC",
   //           is_banned: true,
-  //           ban_date: new Date().toISOString(),
+  //           ban_date: new Date().toISString(),
   //         });
   //       } else if (isGameBanned) {
   //         needsUpdate.push({
@@ -613,7 +613,8 @@ export default function Home() {
 
   const sortedBannedAccounts = sortAccounts(bannedAccounts, sortDescending);
   const newBansText = newBans.length ? newBans.map((account) => {
-    return <a href={`https://www.steamcommunity.com/profiles/${account.steam_id}`}>{account.display_name}</a>
+    console.log(JSON.stringify(account));
+    return <a key={account.steam_id} href={`https://www.steamcommunity.com/profiles/${account.steam_id}`}>{account.display_name}</a>
   }) : ""
 
   const bannedTrackedAccountsDisplay = bannedAccounts.length ? (
@@ -749,12 +750,15 @@ export default function Home() {
                 </h1>
               )}
               {refreshSuccess && (
+                <>
                 <h1 className="mt-[10px] text-green-600 text-center text-4xl">
                   Successfully refreshed accounts.&nbsp;
                   {foundBans
-                    ? `Found ${numBansFound} new bans! The following players were banned: ${newBansText}`
+                    ? `Found ${numBansFound} new bans! The following players were banned: `
                     : "No bans detected."}
+                    {foundBans && newBansText}
                 </h1>
+                </>
               )}
             </div>
             <div className="mb-[50px] min-h-[64.2vh]">
