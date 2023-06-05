@@ -159,8 +159,6 @@ export default function Home() {
 
       if (addTrackedAccountError)
         console.log(JSON.stringify(addTrackedAccountError, null, 2));
-      else
-        console.log(`added steam user [${steam64id}] to tracked_users table`);
 
       if (addTrackedAccountData) {
         const { error: junctionInsertError } = await supabase
@@ -265,7 +263,6 @@ export default function Home() {
     // limit refresh to once every 10 minutes
     if (Date.now() - dateObj.valueOf() < 600000) {
       setTimeToRefresh(600000 - (Date.now() - dateObj.valueOf()));
-      console.log(timeToRefresh);
       return true;
     } else {
       return false;
@@ -603,7 +600,6 @@ export default function Home() {
           key={account.steam_id}
           untrack={untrack}
           accountId={account.id}
-          inventoryValue={account.inventory_value}
         />
       );
     })
@@ -613,7 +609,6 @@ export default function Home() {
 
   const sortedBannedAccounts = sortAccounts(bannedAccounts, sortDescending);
   const newBansText = newBans.length ? newBans.map((account) => {
-    console.log(JSON.stringify(account));
     return <a key={account.steam_id} href={`https://www.steamcommunity.com/profiles/${account.steam_id}`}>{account.display_name}</a>
   }) : ""
 
@@ -629,7 +624,6 @@ export default function Home() {
           key={account.steam_id}
           untrack={untrack}
           accountId={account.id}
-          inventoryValue={account.inventory_value}
         />
       );
     })

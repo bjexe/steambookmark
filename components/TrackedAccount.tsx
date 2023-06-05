@@ -1,26 +1,21 @@
-import { useState } from "react";
 import Image from "next/image";
 
 export default function TrackedAccount({
   displayName,
   isBanned,
-  todo,
   steamId,
   avatarUrl,
   trackedDate,
   untrack,
   accountId,
-  inventoryValue,
 }: {
   displayName: string;
   isBanned: boolean;
-  todo?: [];
   steamId: string;
   avatarUrl?: string;
   trackedDate: string;
   untrack: Function;
   accountId: Number | String;
-  inventoryValue: Number | String;
 }) {
   let showDisplayName =
     displayName.length > 15
@@ -60,7 +55,6 @@ export default function TrackedAccount({
                 {isBanned ? "BANNED!" : "No ban"}
               </p>
               {trackedDate && <p className="m-0">Tracked: {date.toDateString()}</p>}
-              {/* {inventoryValue ? <p> Inventory value: ${`${inventoryValue}`}</p> : <p>No inventory data</p>} */}
             </div>
           </div>
         </a>
