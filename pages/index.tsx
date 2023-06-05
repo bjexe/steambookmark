@@ -7,8 +7,6 @@ import { useRouter } from "next/router";
 import { useSession } from "@supabase/auth-helpers-react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
-//TODO: set logging in errors and display them on login error, triangle thing
-
 export default function Index() {
   const router = useRouter();
   const session = useSession();

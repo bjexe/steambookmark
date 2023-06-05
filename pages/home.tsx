@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import TrackedAccount from "@/components/TrackedAccount";
-// const prices = require("@/data/prices_v6.json"); // for tracking inventory values
 
 export default function Home() {
   const [userToAdd, setUserToAdd] = useState("");
@@ -141,8 +140,6 @@ export default function Home() {
       const rawProfileDetails = profileDetails.data[0];
       const displayName = rawProfileDetails.personaname;
       const avatarUrl = rawProfileDetails.avatarfull;
-
-      // const inventoryValue = await getInventoryValue(steam64id);
 
       const { data: addTrackedAccountData, error: addTrackedAccountError } =
         await supabase
@@ -345,122 +342,6 @@ export default function Home() {
     setRefreshSuccess(true);
   }
 
-  // works, sometimes. Steam inventory API is heavily rate limited on IP
-  // async function refreshTrackedAccountsWithInventory() {
-  //   await updatePlayerDetails();
-  //   const { data: tracked_accounts_data } = await supabase
-  //     .from("profiles")
-  //     .select(
-  //       "tracked_accounts(id, steam_id, is_banned, ban_type, ban_date, initial_vac_bans, initial_game_bans, date_added)"
-  //     );
-  //   const tracked_accounts = tracked_accounts_data[0].tracked_accounts;
-
-  //   if (tracked_accounts === null || tracked_accounts.length < 1) return;
-
-  //   const steam_ids: string[] = [];
-  //   tracked_accounts.forEach((account) => {
-  //     steam_ids.push(account.steam_id);
-  //   });
-
-  //   const newBanData = await queryBans(steam_ids);
-  //   const rawNewBanData = newBanData.data;
-
-  //   const needsUpdate = [];
-  //   const needsUpdatePromise = new Promise(async () => {
-  //     await tracked_accounts.forEach(async (account) => {
-  //       let updated_info = rawNewBanData.find(
-  //         (result) => result.SteamId === account.steam_id
-  //       );
-  //       const inventoryValue = await getInventoryValue(account.steam_id);
-  //       const inventoryNeedsUpdate =
-  //         inventoryValue !== null &&
-  //         inventoryValue > -1 &&
-  //         inventoryValue !== account.inventory_value;
-  //       const isVacBanned =
-  //         updated_info.NumberOfVACBans > account.initial_vac_bans;
-  //       const isGameBanned =
-  //         updated_info.NumberOfGameBans > account.initial_game_bans;
-
-  //       if (inventoryNeedsUpdate) {
-  //         if (isVacBanned) {
-  //           needsUpdate.push({
-  //             ...account,
-  //             ban_type: "VAC",
-  //             is_banned: true,
-  //             ban_date: new Date().toISOString(),
-  //             inventory_value: inventoryValue,
-  //           });
-  //         } else if (isGameBanned) {
-  //           needsUpdate.push({
-  //             ...account,
-  //             ban_type: "Game",
-  //             ban_date: new Date().toISOString(),
-  //             is_banned: true,
-  //             inventory_value: inventoryValue,
-  //           });
-  //         } else {
-  //           console.log(`updating inventory value for ${account.steam_id}`);
-  //           needsUpdate.push({
-  //             ...account,
-  //             inventory_value: inventoryValue,
-  //           });
-  //         }
-  //       } else if (isVacBanned) {
-  //         needsUpdate.push({
-  //           ...account,
-  //           ban_type: "VAC",
-  //           is_banned: true,
-  //           ban_date: new Date().toISString(),
-  //         });
-  //       } else if (isGameBanned) {
-  //         needsUpdate.push({
-  //           ...account,
-  //           ban_type: "Game",
-  //           is_banned: true,
-  //           ban_date: new Date().toISOString(),
-  //         });
-  //       }
-  //     });
-  //   });
-  //   needsUpdatePromise.then(() => {
-  //     console.log(JSON.stringify(needsUpdate, null, 2));
-  //     if (needsUpdate.length > 0) {
-  //       needsUpdate.forEach(async (account) => {
-  //         const { error } = await supabase
-  //           .from("tracked_accounts")
-  //           .update({
-  //             ...account,
-  //           })
-  //           .eq("id", account.id);
-  //         if (error) {
-  //           console.log(JSON.stringify(error, null, 2));
-  //         } else {
-  //           console.log(`updated account ${JSON.stringify(account, null, 2)}`);
-  //         }
-  //       });
-  //       getTrackedAccounts();
-  //     } else {
-  //       console.log("needsUpdate is empty");
-  //     }
-  //   });
-  //   // if (needsUpdate.length > 0) {
-  //   //   needsUpdate.forEach(async (account) => {
-  //   //     const { error } = await supabase
-  //   //       .from("tracked_accounts")
-  //   //       .update({
-  //   //         ban_date: new Date().toISOString(),
-  //   //         ban_type: account.ban_type,
-  //   //         is_banned: true,
-  //   //       })
-  //   //       .eq("id", account.id);
-  //   //     if (error) {
-  //   //       console.log(JSON.stringify(error, null, 2));
-  //   //     }
-  //   //   });
-  //   //   getTrackedAccounts();
-  //   // }
-  // }
-
   async function queryPlayerDetails(ids: string[]) {
     const sendQuery = async () => {
       const response = await fetch("/api/getPlayerDetails", {
@@ -519,42 +400,6 @@ export default function Home() {
     });
     await getTrackedAccounts();
   }
-
-  // heavily rate limited inventory api makes this broken
-  // async function getInventoryValue(steamid: String) {
-  //   const sendQuery = async () => {
-  //     const response = await fetch("/api/getPlayerInventory", {
-  //       method: "POST",
-  //       body: JSON.stringify({ steam_id: steamid }),
-  //     });
-  //     return response.json();
-  //   };
-  //   let data = await sendQuery().then((data) => data);
-  //   // console.log(JSON.stringify(data, null, 2));
-  //   if (data.error) {
-  //     return null;
-  //   }
-  //   if (data.inventory === null) {
-  //     return -1; // private profile
-  //   } else {
-  //     let totalPrice = 0;
-  //     data.inventory.descriptions.forEach((description) => {
-  //       if (description.marketable !== 1) {
-  //         // console.log(`${description.market_name} is not marketable`);
-  //         return;
-  //       }
-  //       const name = description.market_name;
-  //       if (prices[name]["buff163"]["starting_at"]) {
-  //         totalPrice =
-  //           totalPrice + prices[name]["buff163"]["starting_at"]["price"];
-  //       } else if (prices[name]["steam"]["last_7d"]) {
-  //         totalPrice = totalPrice + prices[name["steam"]["last_7d"]];
-  //       }
-  //     });
-  //     console.log(`total price: ${totalPrice}`);
-  //     return totalPrice;
-  //   }
-  // }
 
   function sortAccounts(accounts: Object[], decreasing: boolean = true) {
     const sortedAccounts = accounts.sort((a, b) => {
