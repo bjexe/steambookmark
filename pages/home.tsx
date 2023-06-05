@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import TrackedAccount from "@/components/TrackedAccount";
+import { queryBans, queryID, queryPlayerDetails } from "@/utils/steam/steamApis"
 
 export default function Home() {
   const [userToAdd, setUserToAdd] = useState("");
@@ -62,31 +63,6 @@ export default function Home() {
       );
     }
   }, [trackedAccounts]);
-
-  async function queryBans(ids: string[]) {
-    const sendQuery = async () => {
-      const response = await fetch("/api/queryBans", {
-        method: "POST",
-        body: JSON.stringify({ ids: ids }),
-      });
-      return response.json();
-    };
-    const data = await sendQuery().then((data) => data);
-    return data;
-  }
-
-  async function queryID(body: string) {
-    let result;
-    const sendQuery = async () => {
-      const response = await fetch("/api/resolveSteam64ID", {
-        method: "POST",
-        body: JSON.stringify({ id: body }),
-      });
-      return response.json();
-    };
-    result = await sendQuery().then((data) => data.id);
-    return result;
-  }
 
   // some accounts are private, consider using private data when available. currently only uses the public fields from the api
   async function sus(id: string) {
@@ -340,18 +316,6 @@ export default function Home() {
       .update({ last_refreshed: new Date().toISOString() })
       .eq("id", await getUserID());
     setRefreshSuccess(true);
-  }
-
-  async function queryPlayerDetails(ids: string[]) {
-    const sendQuery = async () => {
-      const response = await fetch("/api/getPlayerDetails", {
-        method: "POST",
-        body: JSON.stringify({ ids: ids }),
-      });
-      return response.json();
-    };
-    const data = await sendQuery().then((data) => data);
-    return data;
   }
 
   async function untrack(trackedAccountId) {
