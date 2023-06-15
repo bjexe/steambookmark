@@ -465,7 +465,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <body className="h-[100%]">
+        
           <div className="bg-main text-white bg-cover bg-center font-inter">
             <div>
               {/* Navbar */}
@@ -545,7 +545,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </body>
       </main>
     </>
   );
