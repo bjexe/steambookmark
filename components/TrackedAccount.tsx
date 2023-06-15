@@ -23,7 +23,7 @@ export default function TrackedAccount({
       : displayName;
   const date = new Date(trackedDate)
   return (
-    <div className="flex flex-row h-[75px]">
+    <div className="flex flex-row h-[75px] break-words">
       <div className="flex flex-col w-[500px]">
         <a
           target="_blank"
@@ -41,15 +41,15 @@ export default function TrackedAccount({
               height={75}
             />
             <div className="w-[5px] bg-cyan-500" />
-            <p className="text-[#34BED3] ml-[20px] self-center text-l">
+            <p className="text-[#34BED3] ml-[10px] self-center text-l">
               {showDisplayName}
             </p>
-            <div className="ml-[35px] self-center mr-[20px]">
+            <div className="ml-[5px] text-center self-center mr-[20px]">
               <p
                 className={
                   isBanned
                     ? "text-red-600 font-bold m-0"
-                    : "text-green-600 font-bold"
+                    : "text-green-600 font-bold m-0"
                 }
               >
                 {isBanned ? "BANNED!" : "No ban"}
