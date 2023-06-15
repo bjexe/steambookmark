@@ -5,7 +5,11 @@ import { useState, useEffect } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import TrackedAccount from "@/components/TrackedAccount";
-import { queryBans, queryID, queryPlayerDetails } from "@/utils/steam/steamApis"
+import {
+  queryBans,
+  queryID,
+  queryPlayerDetails,
+} from "@/utils/steam/steamApis";
 
 export default function Home() {
   const [userToAdd, setUserToAdd] = useState("");
@@ -417,9 +421,18 @@ export default function Home() {
   );
 
   const sortedBannedAccounts = sortAccounts(bannedAccounts, sortDescending);
-  const newBansText = newBans.length ? newBans.map((account) => {
-    return <a key={account.steam_id} href={`https://www.steamcommunity.com/profiles/${account.steam_id}`}>{account.display_name}</a>
-  }) : ""
+  const newBansText = newBans.length
+    ? newBans.map((account) => {
+        return (
+          <a
+            key={account.steam_id}
+            href={`https://www.steamcommunity.com/profiles/${account.steam_id}`}
+          >
+            {account.display_name}
+          </a>
+        );
+      })
+    : "";
 
   const bannedTrackedAccountsDisplay = bannedAccounts.length ? (
     sortedBannedAccounts.map((account) => {
@@ -452,128 +465,87 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className="bg-main text-white bg-scroll bg-repeat bg-cover font-inter">
-          <div>
-            <div className="flex justify-center flex-col items-center pt-[20px] pb-[20px]">
-              <div className="flex items-center w-full">
-                <div>
-                  <h1 className="text-5xl font-bold justify-self-start w-[550px] text-center">
-                    VacTrack
-                  </h1>
-                </div>
-                <div className="justify-self-center">
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      sus(userToAdd);
-                    }}
-                    className="flex flex-row items-center justify-self-end gap-x-[25px]"
-                  >
-                    <label className="">
-                      <input
-                        className="text-black ml-[25px] rounded-xl w-[80vh] text-center h-[3vh]"
-                        type="text"
-                        value={userToAdd}
-                        onChange={(e) => {
-                          e.preventDefault();
-                          const { value } = e.target;
-                          setUserToAdd(value);
-                        }}
-                        placeholder="Input link to account or Steam ID"
-                      />
-                    </label>
-                    <button className="text-3xl rounded-xl p-3 bg-[#1C252E] w-[250px] self-center active:bg-[#34BED3] hover:drop-shadow-2xl">
-                      Track Account
-                    </button>
-                  </form>
-                </div>
-                <button
-                  className="ml-[175px] text-l rounded-xl p-3 bg-[#1C252E] active:bg-[#34BED3] hover:drop-shadow-2xl"
-                  onClick={handleSignOut}
-                >
-                  Sign Out
-                </button>
-              </div>
-              {findAccountError && (
-                <p className="text-red-600 text-m">
-                  Hmm... looks like we can&apos;t find that account. Please
-                  check your input.
-                </p>
-              )}
-            </div>
-            <hr className="m-0" />
-            <div className="flex justify-evenly">
-              <div className="flex gap-x-[20px]">
-                <div className="text-center text-[#34BED3] text-3xl mt-[50px] hover:cursor-pointer hover:drop-shadow-5xl rounded-xl p-3 bg-[#1C252E] w-[500px] self-center mt-[25px] hover:drop-shadow-2xl">
-                  Sort by:&nbsp;
-                  <select
-                    className="bg-[#1C252E] underline"
-                    value={sortByLabel}
-                    onChange={(e) => setSortByLabel(e.target.value)}
-                  >
-                    <option value="Newest First">Newest First</option>
-                    <option value="Oldest First">Oldest First</option>
-                  </select>
-                </div>
-                <h2
-                  className={
-                    viewingAll
-                      ? "text-center text-[#34BED3] text-3xl mt-[50px] underline hover:cursor-pointer hover:drop-shadow-5xl rounded-xl p-3 bg-[#1C252E] w-[500px] self-center mt-[25px] hover:drop-shadow-2xl"
-                      : "text-center text-3xl mt-[50px] hover:cursor-pointer hover:drop-shadow-5xl rounded-xl p-3 bg-[#1C252E] w-[500px] self-center mt-[25px] hover:drop-shadow-2xl"
-                  }
-                  onClick={() => setViewingAll(true)}
-                >
-                  All Tracked Accounts
-                </h2>
-                <h2
-                  className={
-                    !viewingAll
-                      ? "text-center text-[#34BED3] text-3xl mt-[50px] underline hover:cursor-pointer rounded-xl p-3 bg-[#1C252E] w-[400px] self-center mt-[25px] hover:drop-shadow-2xl"
-                      : "text-center text-3xl mt-[50px] hover:cursor-pointer rounded-xl p-3 bg-[#1C252E] w-[400px] self-center mt-[25px] hover:drop-shadow-2xl"
-                  }
-                  onClick={() => setViewingAll(false)}
-                >
-                  Banned Accounts
-                </h2>
-                <button
-                  className="text-3xl rounded-xl p-3 bg-[#1C252E] w-[400px] self-center mt-[50px] active:bg-[#34BED3] hover:drop-shadow-2xl"
-                  onClick={refreshTrackedAccounts}
-                >
-                  Refresh Accounts
-                </button>
-              </div>
-            </div>
+        <body className="h-[100%]">
+          <div className="bg-main text-white bg-cover bg-center font-inter">
             <div>
-              {cooldownError && (
-                <h1 className="mt-[20px] text-red-600 text-center text-4xl">
-                  Failed to refresh accounts: you must wait{" "}
-                  {Math.floor(timeToRefresh / 60000)} minutes and{" "}
-                  {((timeToRefresh % 60000) / 1000).toFixed(0)} seconds before
-                  refreshing again.
-                </h1>
-              )}
-              {refreshSuccess && (
-                <>
-                <h1 className="mt-[10px] text-green-600 text-center text-4xl">
-                  Successfully refreshed accounts.&nbsp;
-                  {foundBans
-                    ? `Found ${numBansFound} new bans! The following players were banned: `
-                    : "No bans detected."}
-                    {foundBans && newBansText}
-                </h1>
-                </>
-              )}
-            </div>
-            <div className="mb-[50px] min-h-[64.2vh]">
-              <div className="flex flex-row flex-wrap gap-[25px] mt-[50px] justify-center">
-                {viewingAll && allTrackedAccountsDisplay}
-                {!viewingAll && bannedTrackedAccountsDisplay}
+              {/* Navbar */}
+              <div className="flex flex-col">
+                <h1 className="text-4xl text-center font-bold mb-3 pt-3 underline">SteamBookmark</h1>
+                <button onClick={handleSignOut} className="mx-auto rounded-xl p-3 bg-[#1C252E] w-[90px] active:bg-[#34BED3] hover:drop-shadow-2xl mb-3">Sign out</button>
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    sus(userToAdd);
+                  }}
+                  className="flex flex-col justify-center items-center gap-y-5"
+                >
+                  <input
+                    type="text"
+                    value={userToAdd}
+                    placeholder="Input SteamID or link to Steam account"
+                    onChange={(e) => {
+                      e.preventDefault();
+                      const { value } = e.target;
+                      setUserToAdd(value);
+                    }}
+                    className="w-[80%]"
+                  />
+                  <button className="rounded-xl p-3 bg-[#1C252E] w-[200px] self-center active:bg-[#34BED3] hover:drop-shadow-2xl mb-3">Track Account</button>
+                </form>
+              </div>
+              {/* body */}
+              <div>
+                {/* view options */}
+                <div className="flex justify-center flex-col gap-y-2 mb-[20px]">
+                  <div className="text-center text-[#34BED3] hover:cursor-pointer hover:drop-shadow-5xl rounded-xl p-3 bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl">
+                    Sort by:&nbsp;
+                    <select
+                      className="bg-[#1C252E] underline"
+                      value={sortByLabel}
+                      onChange={(e) => setSortByLabel(e.target.value)}
+                    >
+                      <option value="Newest First">Newest First</option>
+                      <option value="Oldest First">Oldest First</option>
+                    </select>
+                  </div>
+                  <h2
+                    className={
+                      viewingAll
+                        ? "text-center text-[#34BED3] text-3xl underline hover:cursor-pointer hover:drop-shadow-5xl rounded-xl p-3 bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl"
+                        : "text-center text-3xl hover:cursor-pointer hover:drop-shadow-5xl rounded-xl bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl"
+                    }
+                    onClick={() => setViewingAll(true)}
+                  >
+                    All Accounts
+                  </h2>
+                  <h2
+                    className={
+                      !viewingAll
+                        ? "text-center text-3xl text-[#34BED3] underline hover:cursor-pointer rounded-xl bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl"
+                        : "text-center text-3xl hover:cursor-pointer rounded-xl bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl"
+                    }
+                    onClick={() => setViewingAll(false)}
+                  >
+                    Banned Accounts
+                  </h2>
+                  <button
+                    className="rounded-xl p-3 bg-[#1C252E] w-[200px] self-center active:bg-[#34BED3] hover:drop-shadow-2xl"
+                    onClick={refreshTrackedAccounts}
+                  >
+                    Refresh Accounts
+                  </button>
+                </div>
+                {/* view results */}
+                <div>
+                  <div className="flex flex-col gap-y-3">
+                    {viewingAll && allTrackedAccountsDisplay}
+                    {!viewingAll && bannedTrackedAccountsDisplay}
+                  </div>
+                </div>
               </div>
             </div>
-            <p className="">&nbsp;</p>
           </div>
-        </div>
-        <div className="z-10 rotate-90 w-0 h-0 "></div>
+        </body>
       </main>
     </>
   );
