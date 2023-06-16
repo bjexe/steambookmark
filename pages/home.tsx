@@ -474,10 +474,11 @@ export default function Home() {
               </h1>
               <button
                 onClick={handleSignOut}
-                className="mx-auto rounded-xl p-3 bg-[#1C252E] w-[90px] active:bg-[#34BED3] hover:drop-shadow-2xl mb-3"
+                className="mx-auto rounded-xl p-3 bg-[#FF312E] w-[90px] active:bg-[#34BED3] hover:drop-shadow-2xl mb-12"
               >
                 Sign out
               </button>
+              <h1 className="text-center text-2xl underline mb-3">Track an account</h1>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -494,9 +495,9 @@ export default function Home() {
                     const { value } = e.target;
                     setUserToAdd(value);
                   }}
-                  className="w-[80%]"
+                  className="w-[80%] rounded p-2 text-sm text-center"
                 />
-                <button className="rounded-xl p-3 bg-[#1C252E] w-[200px] self-center active:bg-[#34BED3] hover:drop-shadow-2xl mb-3">
+                <button className="rounded-xl p-3 bg-[#109648] w-[200px] self-center active:bg-[#34BED3] hover:drop-shadow-2xl mb-12">
                   Track Account
                 </button>
               </form>
@@ -505,8 +506,10 @@ export default function Home() {
             <div>
               {/* view options */}
               <div className="flex justify-center flex-col gap-y-2 mb-[20px]">
+                <h1 className="text-center text-2xl underline mb-3">Tracked accounts</h1>
+                <div className="flex justify-center items-center">
+                  <h2 className="text-xl">Sort by:&nbsp;</h2>
                 <div className="text-center text-[#34BED3] hover:cursor-pointer hover:drop-shadow-5xl rounded-xl p-3 bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl">
-                  Sort by:&nbsp;
                   <select
                     className="bg-[#1C252E] underline"
                     value={sortByLabel}
@@ -516,28 +519,32 @@ export default function Home() {
                     <option value="Oldest First">Oldest First</option>
                   </select>
                 </div>
-                <h2
-                  className={
-                    viewingAll
-                      ? "text-center text-[#34BED3] text-3xl underline hover:cursor-pointer hover:drop-shadow-5xl rounded-xl p-3 bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl"
-                      : "text-center text-3xl hover:cursor-pointer hover:drop-shadow-5xl rounded-xl bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl"
-                  }
-                  onClick={() => setViewingAll(true)}
-                >
-                  All Accounts
-                </h2>
-                <h2
-                  className={
-                    !viewingAll
-                      ? "text-center text-3xl text-[#34BED3] underline hover:cursor-pointer rounded-xl bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl"
-                      : "text-center text-3xl hover:cursor-pointer rounded-xl bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl"
-                  }
-                  onClick={() => setViewingAll(false)}
-                >
-                  Banned Accounts
-                </h2>
+                </div>
+                <div className="flex justify-center items-center mb-3">
+                  <h2 className="text-xl">Show:&nbsp;</h2>
+                  <h2
+                    className={
+                      viewingAll
+                        ? "text-center text-[#34BED3] text-l underline hover:cursor-pointer hover:drop-shadow-5xl rounded-xl flex justify-center items-center bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl h-[55px]"
+                        : "text-center text-l hover:cursor-pointer hover:drop-shadow-5xl rounded-xl bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl h-[55px] flex justify-center items-center"
+                    }
+                    onClick={() => setViewingAll(true)}
+                  >
+                    All Accounts
+                  </h2>
+                  <h2
+                    className={
+                      !viewingAll
+                        ? "text-center text-[#34BED3] text-l underline hover:cursor-pointer hover:drop-shadow-5xl rounded-xl bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl h-[55px] flex justify-center items-center"
+                        : "text-center text-l hover:cursor-pointer rounded-xl bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl h-[55px] flex justify-center items-center"
+                    }
+                    onClick={() => setViewingAll(false)}
+                  >
+                    Banned Accounts
+                  </h2>
+                </div>
                 <button
-                  className="rounded-xl p-3 bg-[#1C252E] w-[200px] self-center active:bg-[#34BED3] hover:drop-shadow-2xl"
+                  className="rounded-xl p-3 bg-[#109648] w-[200px] self-center active:bg-[#34BED3] hover:drop-shadow-2xl"
                   onClick={refreshTrackedAccounts}
                 >
                   Refresh Accounts
