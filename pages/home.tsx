@@ -552,7 +552,7 @@ export default function Home() {
               </div>
               {/* view results */}
               <div>
-                <div className="flex flex-col gap-y-8">
+                <div className="flex flex-col gap-y-8 justify-center min-[520px]:items-center">
                   {viewingAll && allTrackedAccountsDisplay}
                   {!viewingAll && bannedTrackedAccountsDisplay}
                 </div>
