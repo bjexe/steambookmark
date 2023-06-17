@@ -464,8 +464,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div className="bg-main text-white bg-cover bg-center font-inter">
+      <main className="h-[100%]">
+        <div className="bg-main text-white bg-cover bg-center font-inter h-[100%]">
           <div>
             {/* Navbar */}
             <div className="flex flex-col">
@@ -478,7 +478,9 @@ export default function Home() {
               >
                 Sign out
               </button>
-              <h1 className="text-center text-2xl underline mb-3">Track an account</h1>
+              <h1 className="text-center text-2xl underline mb-3">
+                Track an account
+              </h1>
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -506,21 +508,23 @@ export default function Home() {
             <div>
               {/* view options */}
               <div className="flex justify-center flex-col gap-y-2 mb-[20px]">
-                <h1 className="text-center text-2xl underline mb-3">Tracked accounts</h1>
+                <h1 className="text-center text-2xl underline mb-3">
+                  Tracked accounts
+                </h1>
                 <div className="flex justify-center items-center">
                   <h2 className="text-xl">Sort by:&nbsp;</h2>
-                <div className="text-center text-[#34BED3] hover:cursor-pointer hover:drop-shadow-5xl rounded-xl p-3 bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl">
-                  <select
-                    className="bg-[#1C252E] underline"
-                    value={sortByLabel}
-                    onChange={(e) => setSortByLabel(e.target.value)}
-                  >
-                    <option value="Newest First">Newest First</option>
-                    <option value="Oldest First">Oldest First</option>
-                  </select>
+                  <div className="text-center text-[#34BED3] hover:cursor-pointer hover:drop-shadow-5xl rounded-xl p-3 bg-[#1C252E] w-[200px] self-center hover:drop-shadow-2xl">
+                    <select
+                      className="bg-[#1C252E] underline"
+                      value={sortByLabel}
+                      onChange={(e) => setSortByLabel(e.target.value)}
+                    >
+                      <option value="Newest First">Newest First</option>
+                      <option value="Oldest First">Oldest First</option>
+                    </select>
+                  </div>
                 </div>
-                </div>
-                <div className="flex justify-center items-center mb-3">
+                <div className="flex justify-center items-center mb-3 ">
                   <h2 className="text-xl">Show:&nbsp;</h2>
                   <h2
                     className={
@@ -559,6 +563,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+          &nbsp;
         </div>
       </main>
     </>
