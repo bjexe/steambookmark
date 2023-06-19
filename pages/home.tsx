@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import TrackedAccount from "@/components/TrackedAccount";
+import Notif from "@/components/Notif";
 import {
   queryBans,
   queryID,
@@ -25,6 +26,7 @@ export default function Home() {
   const [foundBans, setFoundBans] = useState(false);
   const [numBansFound, setNumBansFound] = useState(0);
   const [timeToRefresh, setTimeToRefresh] = useState(0);
+  const [showNotif, setShowNotif] = useState(false);
   const user = useUser();
   const router = useRouter();
   const supabase = useSupabaseClient();
@@ -41,21 +43,6 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    if (cooldownError) {
-      setTimeout(() => {
-        setCooldownError(false);
-      }, 5000);
-    }
-  }, [cooldownError]);
-
-  useEffect(() => {
-    if (refreshSuccess) {
-      setTimeout(() => {
-        setRefreshSuccess(false);
-      }, 5000);
-    }
-  }, [refreshSuccess]);
 
   useEffect(() => {
     if (trackedAccounts.length) {
@@ -320,6 +307,7 @@ export default function Home() {
       .update({ last_refreshed: new Date().toISOString() })
       .eq("id", await getUserID());
     setRefreshSuccess(true);
+    setShowNotif(true);
   }
 
   async function untrack(trackedAccountId) {
@@ -421,18 +409,14 @@ export default function Home() {
   );
 
   const sortedBannedAccounts = sortAccounts(bannedAccounts, sortDescending);
-  const newBansText = newBans.length
+  const newBansJSON = newBans.length
     ? newBans.map((account) => {
-        return (
-          <a
-            key={account.steam_id}
-            href={`https://www.steamcommunity.com/profiles/${account.steam_id}`}
-          >
-            {account.display_name}
-          </a>
-        );
+        return {
+          steamID: account.steam_id,
+          displayName: account.display_name
+        }
       })
-    : "";
+    : [{}];
 
   const bannedTrackedAccountsDisplay = bannedAccounts.length ? (
     sortedBannedAccounts.map((account) => {
@@ -469,6 +453,9 @@ export default function Home() {
           <div>
             {/* Navbar */}
             <div className="flex flex-col">
+              <div className="fixed z-10 left-[50%] translate-x-[-50%]">
+                {showNotif && <Notif newBans={newBans.length ? true : false} banList={newBansJSON} action={() => setShowNotif(false)}/>}
+              </div>
               <h1 className="text-4xl text-center font-bold mb-3 pt-3 underline">
                 SteamBookmark
               </h1>
