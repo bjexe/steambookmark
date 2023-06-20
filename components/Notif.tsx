@@ -8,7 +8,7 @@ export default function Notif({
   banList?: { displayName: string; steamID: string }[];
 }) {
   const greenOuterClass =
-    "flex flex-col rounded-3xl bg-green-200 w-[250px] h-[250px] font-semibold";
+    "flex flex-col rounded-3xl bg-[#386150] w-[250px] h-[250px] font-semibold";
   const redOuterClass =
     "flex flex-col rounded-3xl bg-red-200 w-[250px] h-[250px] font-semibold";
   const banLinks = banList?.length
