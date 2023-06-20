@@ -491,7 +491,7 @@ export default function Home() {
                     const { value } = e.target;
                     setUserToAdd(value);
                   }}
-                  className="w-[80%] rounded p-2 text-sm text-center"
+                  className="w-[80%] rounded p-2 text-sm text-center text-black"
                 />
                 <button className="rounded-xl p-3 bg-[#109648] w-[200px] self-center active:bg-[#34BED3] hover:drop-shadow-2xl mb-12">
                   Track Account
