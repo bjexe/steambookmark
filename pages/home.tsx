@@ -11,6 +11,7 @@ import {
   queryID,
   queryPlayerDetails,
 } from "@/utils/steam/steamApis";
+import Cooldown from "@/components/Cooldown";
 
 export default function Home() {
   const [userToAdd, setUserToAdd] = useState("");
@@ -22,9 +23,6 @@ export default function Home() {
   const [findAccountError, setFindAccountError] = useState(false);
   const [sortByLabel, setSortByLabel] = useState("Newest First");
   const [cooldownError, setCooldownError] = useState(false);
-  const [refreshSuccess, setRefreshSuccess] = useState(false);
-  const [foundBans, setFoundBans] = useState(false);
-  const [numBansFound, setNumBansFound] = useState(0);
   const [timeToRefresh, setTimeToRefresh] = useState(0);
   const [showNotif, setShowNotif] = useState(false);
   const user = useUser();
@@ -54,6 +52,15 @@ export default function Home() {
       );
     }
   }, [trackedAccounts]);
+
+  // use keyframe animation instead eventually
+  useEffect(() => {
+    if(cooldownError){
+      setTimeout(() => {
+        setCooldownError(false);
+      }, 5000)
+    }
+  }, [cooldownError])
 
   // some accounts are private, consider using private data when available. currently only uses the public fields from the api
   async function sus(id: string) {
@@ -280,8 +287,6 @@ export default function Home() {
       }
     });
     if (needsUpdate.length > 0) {
-      setFoundBans(true);
-      setNumBansFound(needsUpdate.length);
       needsUpdate.forEach(async (account) => {
         setNewBans((old) => {
           const ret = [...old];
@@ -306,7 +311,6 @@ export default function Home() {
       .from("profiles")
       .update({ last_refreshed: new Date().toISOString() })
       .eq("id", await getUserID());
-    setRefreshSuccess(true);
     setShowNotif(true);
   }
 
@@ -453,8 +457,11 @@ export default function Home() {
           <div>
             {/* Navbar */}
             <div className="flex flex-col">
-              <div className="fixed z-10 left-[50%] translate-x-[-50%]">
+              <div className="fixed z-10 left-[50%] translate-x-[-50%] translate-y-[50%]">
                 {showNotif && <Notif newBans={newBans.length ? true : false} banList={newBansJSON} action={() => setShowNotif(false)}/>}
+              </div>
+              <div className="fixed z-10 left-[50%] translate-x-[-50%] translate-y-[50%]">
+                {cooldownError && <Cooldown time={timeToRefresh} />}
               </div>
               <h1 className="text-4xl text-center font-bold mb-3 pt-3 underline">
                 SteamBookmark
