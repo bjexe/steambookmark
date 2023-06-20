@@ -231,9 +231,9 @@ export default function Home() {
 
   function checkCooldown(date: string) {
     const dateObj = new Date(date);
-    // limit refresh to once every 10 minutes
-    if (Date.now() - dateObj.valueOf() < 600000) {
-      setTimeToRefresh(600000 - (Date.now() - dateObj.valueOf()));
+    // limit refresh to once every minute
+    if (Date.now() - dateObj.valueOf() < 60000) {
+      setTimeToRefresh(60000 - (Date.now() - dateObj.valueOf()));
       return true;
     } else {
       return false;
