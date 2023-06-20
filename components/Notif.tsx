@@ -18,6 +18,7 @@ export default function Notif({
             target="_blank"
             className="hover:text-purple-600 text-blue-600"
             href={`http://www.steamcommunity.com/profiles/${bannedAccount.steamID}`}
+            key={bannedAccount.steamID}
           >
             {bannedAccount.displayName}
           </a>
