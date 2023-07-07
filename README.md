@@ -1,5 +1,6 @@
-# VAC Bookmark
+# Steam Bookmark
 ## A web app for bookmarking suspicious Steam accounts to gather stats on VAC bans.
+![Image of Steam Bookmark dashboard](https://raw.githubusercontent.com/bjexe/steambookmark/main/public/img/dash.png)
 ### Usage
 - Make an account at http://www.steambookmark.vercel.app 
 - Track accounts by inserting a link to a steam profile or a steam account's ID in the input field and submit
