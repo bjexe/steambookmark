@@ -105,7 +105,7 @@ export default function Index() {
   return (
     <>
       <Head>
-        <title>VAC Bookmark</title>
+        <title>SteamBookmark</title>
         <meta
           name="description"
           content="A web app to bookmark suspicious Steam users and gather stats on VAC bans"
@@ -113,29 +113,11 @@ export default function Index() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div className="flex text-white font-inter">
-          <div className="bg-[#1C252E] w-[50%] h-[100vh]">
-            <div className="flex flex-col items-center justify-center gap-y-[45px] h-full">
-              <Image
-                alt="An image of some tracked accounts"
-                src="/img/all_accounts.png"
-                width={799}
-                height={392}
-                className="rounded-3xl"
-              />
-              <Image
-                alt="An image of some tracked accounts that were banned"
-                src="/img/banned_accounts.png"
-                width={799}
-                height={392}
-                className="rounded-3xl"
-              />
-            </div>
-          </div>
-          <div className="flex flex-col items-center w-[50%] bg-main h-[100vh]">
-            <div className="w-[90%] mt-[25px]">
-              <h1 className="text-[90px] text-center">VacTrack</h1>
+      {/* <main className="">
+        <div className="flex text-white font-inter h-[100%] W-[100%]">
+          <div className="flex flex-col items-center w-[100%] bg-main h-[100vh]">
+            <div className="w-[100%] mt-[25px]">
+              <h1 className="text-[70px] text-center">VacTrack</h1>
               <p className="text-[25px]">
                 VacTrack is a website for tracking suspicious gamers on Steam.
                 Want to know if that account you reported in-game got banned
@@ -204,7 +186,7 @@ export default function Index() {
                   )}
                 </form>
                 <p
-                  className="hover:underline hover:cursor-pointer mt-[32px]"
+                  className="hover:underline hover:cursor-pointer mt-[32px] text-gray-700"
                   onClick={() => {
                     clearErrors();
                     setLoggingIn((old) => !old);
@@ -214,7 +196,7 @@ export default function Index() {
                     });
                   }}
                 >
-                  Already a member? Log in
+                  Already a member? Log in here.
                 </p>
               </div>
             )}
@@ -255,9 +237,9 @@ export default function Index() {
                     setLoggingIn((old) => !old);
                     setLoginForm({ email: "", pass: "" });
                   }}
-                  className="hover:underline hover:cursor-pointer mt-[32px]"
+                  className="hover:underline hover:cursor-pointer mt-[32px] text-gray-700"
                 >
-                  No account? Register
+                  No account? Register here.
                 </p>
                 {signinError && (
                     <p className="text-red-600 text-[20px] font-bold">
@@ -268,6 +250,138 @@ export default function Index() {
             )}
           </div>
         </div>
+      </main> */}
+      <main className="font-inter bg-main text-gray-200 h-screen">
+        <div className="flex flex-col justify-center items-center text-center mb-8">
+          <h1 className="text-4xl mt-4 underline">SteamBookmark</h1>
+          <p className="text-xl mt-8">
+            A website to track suspicious steam accounts on their game ban
+            status.
+          </p>
+        </div>
+        {/* ----------------------------------------------------------------------------------- */}
+        <hr/>
+        {!loggingIn && (
+          <div className="flex flex-col items-center mt-[20px]">
+            <h2 className="text-[30px] mb-[25px]">Create an account</h2>
+            <form
+              onSubmit={(e) => handleRegister(e)}
+              className="flex flex-col items-center gap-y-[40px]"
+            >
+              <label>
+                <input
+                  type="text"
+                  onChange={(e) => handleRegisterChange(e)}
+                  value={registerForm.email}
+                  name="email"
+                  className="rounded-[12px] h-[62px] w-[320px] bg-[#D9D9D9] text-form-text pl-[10px] text-[30px] placeholder-form-text"
+                  placeholder="Email"
+                />
+              </label>
+              <label>
+                <input
+                  type="password"
+                  onChange={(e) => handleRegisterChange(e)}
+                  value={registerForm.pass}
+                  name="pass"
+                  className="rounded-[12px] h-[62px] w-[320px] bg-[#D9D9D9] text-form-text pl-[10px] text-[30px] placeholder-form-text"
+                  placeholder="Password (>= 6 characters)"
+                />
+              </label>
+              <button className="bg-[#B6CFFF] rounded-[40px] py-[14px] px-[54px] text-black font-bold">
+                CREATE ACCOUNT
+              </button>
+              {genericError && (
+                <p className="text-red-600 text-[20px] font-bold">
+                  An unknown error occurred. Please try again later.
+                </p>
+              )}
+              {passwordError && (
+                <p className="text-red-600 text-[20px] font-bold">
+                  Please provide at least 6 characters for password.
+                </p>
+              )}
+              {emailError && (
+                <p className="text-red-600 text-[20px] font-bold">
+                  Invalid email. Please double check the email field or use a
+                  different email.
+                </p>
+              )}
+              {cooldownError && (
+                <p className="text-red-600 text-[20px] font-bold">
+                  Please check your email for verification link.
+                </p>
+              )}
+              {signedUp && (
+                <p className="text-green-600 text-[20px] font-bold">
+                  Sign up successful. Please verify your account via the link
+                  sent to your email before logging in.
+                </p>
+              )}
+            </form>
+            <p
+              className="hover:underline hover:cursor-pointer mt-[32px] text-gray-100"
+              onClick={() => {
+                clearErrors();
+                setLoggingIn((old) => !old);
+                setRegisterForm({
+                  pass: "",
+                  email: "",
+                });
+              }}
+            >
+              Already a member? Log in here.
+            </p>
+          </div>
+        )}
+        {loggingIn && (
+          <div className="flex flex-col items-center mt-[20px]">
+            <h2 className="text-[30px] mb-[20px]">Log in</h2>
+            <form
+              onSubmit={(e) => handleLogin(e)}
+              className="flex flex-col items-center gap-y-[40px]"
+            >
+              <label>
+                <input
+                  type="text"
+                  onChange={(e) => handleLoginChange(e)}
+                  value={loginForm.email}
+                  name="email"
+                  placeholder="Email"
+                  className="rounded-[12px] h-[62px] w-[320px] bg-[#D9D9D9] text-form-text pl-[10px] text-[30px] placeholder-form-text"
+                />
+              </label>
+              <label>
+                <input
+                  type="password"
+                  onChange={(e) => handleLoginChange(e)}
+                  value={loginForm.pass}
+                  name="pass"
+                  placeholder="Password"
+                  className="rounded-[12px] h-[62px] w-[320px] bg-[#D9D9D9] text-form-text pl-[10px] text-[30px] placeholder-form-text"
+                />
+              </label>
+              <button className="bg-[#B6CFFF] rounded-[40px] py-[14px] px-[54px] text-black font-bold">
+                SIGN IN
+              </button>
+            </form>
+            <p
+              onClick={() => {
+                clearErrors();
+                setLoggingIn((old) => !old);
+                setLoginForm({ email: "", pass: "" });
+              }}
+              className="hover:underline hover:cursor-pointer mt-[32px] text-gray-200"
+            >
+              No account? Register here.
+            </p>
+            {signinError && (
+              <p className="text-red-600 text-[20px] font-bold">
+                Please check your credentials.
+              </p>
+            )}
+          </div>
+        )}
       </main>
     </>
   );
