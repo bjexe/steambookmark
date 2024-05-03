@@ -16,7 +16,7 @@ export default function Index() {
     pass: "",
     email: "",
   });
-  const [loggingIn, setLoggingIn] = useState(false);
+  const [loggingIn, setLoggingIn] = useState(true);
   const [signedUp, setSignedUp] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
